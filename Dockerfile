@@ -1,5 +1,7 @@
 FROM codenvy/selenium
 
+
+
 USER user
 
 RUN sudo apt-get -f -y install midori
