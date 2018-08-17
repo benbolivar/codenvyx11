@@ -1,8 +1,6 @@
 FROM codenvy/selenium
 
-RUN sudo apt-add-repository ppa:midori/ppa && \
-    sudo apt-get update && \
-    sudo apt-get install midori
+RUN sudo apt-get -f install midori
     
 USER user
 
