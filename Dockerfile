@@ -3,7 +3,7 @@ FROM codenvy/selenium
 USER user
 
 RUN cd /home/user && \
-    sudo apt-get install -qqy midori && \
+    sudo apt-get =qqy install midori && \
     echo "Hello World!"
 
 RUN echo "[begin] (Blackbox) \n [exec] (Terminal)     {urxvt -fn "xft:Terminus:size=14"} \n \
