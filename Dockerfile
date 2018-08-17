@@ -3,8 +3,7 @@ FROM codenvy/selenium
 USER user
 
 RUN cd /home/user && \
-    sudo apt-get -qqy install midori && \
-    echo "Hello World!"
+    sudo apt-get -y install vim
 
 RUN echo "[begin] (Blackbox) \n [exec] (Terminal)     {urxvt -fn "xft:Terminus:size=14"} \n \
     [exec] (Browser)     {midori} \n \
