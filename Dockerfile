@@ -1,7 +1,7 @@
 FROM codenvy/selenium
 
 RUN sudo apt-get update && \
-    sudo apt-get -qqy install midori
+    sudo apt-get -qqy install midori vim
 
 RUN echo "[begin] (Blackbox) \n [exec] (Terminal)     {urxvt -fn "xft:Terminus:size=14"} \n \
     [exec] (Browser)     {midori} \n \
