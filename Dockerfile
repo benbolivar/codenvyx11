@@ -1,8 +1,8 @@
 FROM codenvy/selenium
 
-RUN sudo apt-get -f install midori
-    
 USER user
+
+RUN sudo apt-get -f -y install midori
 
 RUN echo "[begin] (Blackbox) \n [exec] (Terminal)     {urxvt -fn "xft:Terminus:size=14"} \n \
     [exec] (Browser)     {midori} \n \
