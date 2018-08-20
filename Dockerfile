@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get -y install sudo procps wget unzip mc curl && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
-    echo -e "secret\nsecret" | passwd user
+    echo "secret\nsecret" | passwd user
 
 # install xserver, blackbox, Chrome, Selenium webdriver
 
