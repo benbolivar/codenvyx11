@@ -4,14 +4,14 @@ EXPOSE 8080 8000
 
 ENV TERM xterm
 
-RUN apt-get update && apt-get install -y --no-install-recommends dialog apt-utils
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata && \
     cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 #RUN apt-get update && apt-get install -y --no-install-recommends sudo dialog apt-utils
 #RUN apt-get update && apt-get install -y --no-install-recommends sudo
 
 RUN apt-get update && \
-    apt-get -y install sudo procps wget unzip mc curl && \
+    apt-get -y install sudo procps wget unzip mc curl gnupg2 && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
     echo "secret\nsecret" | passwd user
