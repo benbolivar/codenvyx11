@@ -5,7 +5,7 @@ EXPOSE 8080 8000
 ENV TERM xterm
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata locales && \
     cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 #RUN apt-get update && apt-get install -y --no-install-recommends sudo dialog apt-utils
 #RUN apt-get update && apt-get install -y --no-install-recommends sudo
