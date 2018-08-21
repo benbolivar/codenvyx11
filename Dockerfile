@@ -69,6 +69,8 @@ M2_HOME=/home/user/apache-maven-$MAVEN_VERSION
 
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
+USER root
+
 RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
   wget \
   --no-cookies \
@@ -89,6 +91,8 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\nexport M2_HOME=/home/us
     sudo locale-gen en_US.UTF-8
 
 WORKDIR /projects
+
+USER user
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
     cd /home/user && sleep 3 & \
