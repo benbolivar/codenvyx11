@@ -21,8 +21,6 @@ RUN apt-get update && \
 USER user
 
 RUN cd /home/user && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-RUN wget -q http://chromedriver.storage.googleapis.com/2.19/chromedriver_linux64.zip
-RUN unzip -q chromedriver_linux64.zip && rm chromedriver_linux64.zip
 
 USER root
 
@@ -93,6 +91,5 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\nexport M2_HOME=/home/us
 WORKDIR /projects
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
-    cd /home/user && sleep 3 && \
-    ./chromedriver --port=4444 --whitelisted-ips='' & \
+    cd /home/user && sleep 3 & \
     sleep 365d
