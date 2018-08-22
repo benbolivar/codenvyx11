@@ -18,9 +18,10 @@ RUN apt-get update && \
 
 USER user
 
-RUN sudo apt-add-repository ppa:midori/ppa && sudo apt-get update -qqy && \
+RUN sudo apt-get install software-properties-common && sudo apt-add-repository ppa:midori/ppa && sudo apt-get update -qqy && \
   sudo apt-get -qqy install \
   supervisor \
+  midori \
   x11vnc \
   xvfb \
   subversion \
