@@ -23,14 +23,12 @@ RUN sudo apt-add-repository ppa:midori/ppa && sudo apt-get update -qqy && \
   supervisor \
   x11vnc \
   xvfb \
-  midori \
   subversion \
   net-tools \
   blackbox \
   rxvt-unicode \
-  xfonts-terminus
-#  && \
-#  sudo rm -rf /var/lib/apt/lists/*
+  xfonts-terminus && \
+  sudo rm -rf /var/lib/apt/lists/*
 
 # download and install noVNC, configure Blackbox
 
