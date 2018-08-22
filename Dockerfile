@@ -28,7 +28,6 @@ USER user
 
 RUN sudo apt-get update -qqy && \
   sudo apt-get -qqy install \
-  midori \
   supervisor \
   x11vnc \
   xvfb \
