@@ -16,29 +16,20 @@ RUN apt-get update && \
 
 # install xserver, blackbox, midori (browser)
 
-#USER user
-
-#RUN cd /home/user && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-
-#USER root
-
-#RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
-
 USER user
 
-RUN sudo apt-get update -qqy && \
+RUN sudo apt-add-repository ppa:midori/ppa && sudo apt-get update -qqy && \
   sudo apt-get -qqy install \
   supervisor \
   x11vnc \
   xvfb \
+  midori \
   subversion \
   net-tools \
   blackbox \
   rxvt-unicode \
-  xfonts-terminus
-#  && \
-#  sudo rm /etc/apt/sources.list.d/google-chrome.list \
-#  sudo rm -rf /var/lib/apt/lists/*
+  xfonts-terminus && \
+  sudo rm -rf /var/lib/apt/lists/*
 
 # download and install noVNC, configure Blackbox
 
@@ -46,12 +37,14 @@ RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
     sudo mkdir -p /etc/X11/blackbox && \
-    echo "[begin] (Blackbox) \n [exec] (Terminal)     {urxvt -fn "xft:Terminus:size=14"} \n \
+    echo "[begin] (Blackbox) \n \
+    [exec] (Terminal)    {urxvt -fn "xft:Terminus:size=14"} \n \
     [exec] (Browser)     {midori} \n \
     [end]" | sudo tee -a /etc/X11/blackbox/blackbox-menu
 
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
+
 EXPOSE 6080 32745
 ENV DISPLAY :20.0
 
@@ -66,11 +59,7 @@ M2_HOME=/home/user/apache-maven-$MAVEN_VERSION
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
 RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
-  sudo wget \
-  --no-cookies \
-  --no-check-certificate \
-  --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-  -qO- \
+  sudo wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" -qO- \
   "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-$JAVA_VERSION-linux-x64.tar.gz" | sudo tar -zx -C /opt/ && \
   sudo wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/
 
