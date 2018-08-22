@@ -30,10 +30,13 @@ RUN sudo apt-get update -qqy && \
   xfonts-terminus
 # && \
 #  sudo rm -rf /var/lib/apt/lists/*
+USER root
 
-RUN sudo apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 dbus-x11  && \
-    sudo wget http://midori-browser.org/downloads/midori_0.5.11-0_amd64_.deb  && \
-    sudo dpkg -i midori_0.5.11-0_amd64_.deb
+RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 dbus-x11  && \
+    wget http://midori-browser.org/downloads/midori_0.5.11-0_amd64_.deb  && \
+    dpkg -i midori_0.5.11-0_amd64_.deb
+    
+USER user
 
 # download and install noVNC, configure Blackbox
 
