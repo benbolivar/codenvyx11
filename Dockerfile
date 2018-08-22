@@ -21,7 +21,6 @@ USER user
 RUN sudo apt-get update -qqy && \
   sudo apt-get -qqy install \
   supervisor \
-  midori \
   x11vnc \
   xvfb \
   subversion \
