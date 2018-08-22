@@ -7,32 +7,28 @@ ENV TERM xterm
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata locales && \
     cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
-#RUN apt-get update && apt-get install -y --no-install-recommends sudo dialog apt-utils
-#RUN apt-get update && apt-get install -y --no-install-recommends sudo
 
 RUN apt-get update && \
-    apt-get -y install sudo procps wget unzip mc curl gnupg2 && \
+    apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
     echo "secret\nsecret" | passwd user
 
-# install xserver, blackbox, Chrome, Selenium webdriver
+# install xserver, blackbox, midori (browser)
+
+#USER user
+
+#RUN cd /home/user && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
+#USER root
+
+#RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
 
 USER user
-
-RUN cd /home/user && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-
-USER root
-
-RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
-
-USER user
-
-#dpkg-reconfigure tzdata (just before x11vnc?) / package: Selecting previously unselected package tzdata
 
 RUN sudo apt-get update -qqy && \
   sudo apt-get -qqy install \
-  google-chrome-stable \
+  midori \
   supervisor \
   x11vnc \
   xvfb \
@@ -40,9 +36,10 @@ RUN sudo apt-get update -qqy && \
   net-tools \
   blackbox \
   rxvt-unicode \
-  xfonts-terminus && \
-  sudo rm /etc/apt/sources.list.d/google-chrome.list \
-  sudo rm -rf /var/lib/apt/lists/*
+  xfonts-terminus
+#  && \
+#  sudo rm /etc/apt/sources.list.d/google-chrome.list \
+#  sudo rm -rf /var/lib/apt/lists/*
 
 # download and install noVNC, configure Blackbox
 
@@ -51,12 +48,12 @@ RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
     sudo mkdir -p /etc/X11/blackbox && \
     echo "[begin] (Blackbox) \n [exec] (Terminal)     {urxvt -fn "xft:Terminus:size=14"} \n \
-    [exec] (Chrome)     {/opt/google/chrome/google-chrome} \n \
+    [exec] (Browser)     {midori} \n \
     [end]" | sudo tee -a /etc/X11/blackbox/blackbox-menu
 
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
-EXPOSE 4444 6080 32745
+EXPOSE 6080 32745
 ENV DISPLAY :20.0
 
 ENV MAVEN_VERSION=3.3.9 \
@@ -78,10 +75,8 @@ RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VE
   "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-$JAVA_VERSION-linux-x64.tar.gz" | sudo tar -zx -C /opt/ && \
   sudo wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/
 
-
 RUN sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | sudo tar -zx --strip-components=1 -C /home/user/tomcat8 && \
     sudo rm -rf /home/user/tomcat8/webapps/*
-
 
 ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
