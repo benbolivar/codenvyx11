@@ -9,7 +9,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata locales && \
     cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 
 RUN apt-get update && \
-    apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
+    apt-get -y install sudo procps wget unzip mc curl gnupg2 vim gdebi-core && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
     echo "secret\nsecret" | passwd user
@@ -43,10 +43,13 @@ USER user
 RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    sudo gdebi -n google-chrome-stable_current_amd64.deb && \
     sudo mkdir -p /etc/X11/blackbox && \
     echo "[begin] (Blackbox) \n \
     [exec] (Terminal)    {urxvt -fn "xft:Terminus:size=14"} \n \
     [exec] (Browser)     {midori} \n \
+    [exec] (Chrome)      {google-chrome --no-sandbox} \n \
     [end]" | sudo tee -a /etc/X11/blackbox/blackbox-menu
 
 ADD index.html  /opt/noVNC/
