@@ -83,7 +83,7 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\nexport M2_HOME=/home/us
     
 RUN sudo mkdir -p /etc/pki/tls/cert && \
     echo -e "PH\nCebu\nCebu\nNA\nNA\ncodenvy.io\nben_bolivar@hotmail.com\n" | \
-    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /projects/novnc.pem -out /projects/novnc.pem -days 365 -in - && |
+    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /projects/novnc.pem -out /projects/novnc.pem -days 365 -in - && | \
     sudo chmod 555 /etc/pki/tls/certs/novnc.pem
 
 #Then update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
