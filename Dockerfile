@@ -37,12 +37,12 @@ RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 
     dpkg -i midori_0.5.11-ds1-2_amd64.deb
 
 RUN mkdir -p /etc/pki/tls/certs && \
-    echo "US\n\
-    Georgia\n\
-    Atlanta\n\
-    NA\n\
-    NA\n\
-    codenvy.io\n\
+    echo "US\n \
+    Georgia\n \
+    Atlanta\n \
+    NA\n \
+    NA\n \
+    codenvy.io\n \
     nobody@gmail.com" | openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -in - && \
     chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
