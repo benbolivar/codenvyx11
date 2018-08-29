@@ -43,7 +43,7 @@ RUN mkdir -p /etc/pki/tls/certs && \
     NA\n\
     NA\n\
     codenvy.io\n\
-    nobody@gmail.com" > sslin && openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -in sslin && \
+    nobody@gmail.com" | openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -in - && \
     chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
