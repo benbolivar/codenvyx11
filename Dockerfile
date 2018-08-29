@@ -35,7 +35,13 @@ USER root
 RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11  && \
     wget http://archive.ubuntu.com/ubuntu/pool/universe/m/midori/midori_0.5.11-ds1-2_amd64.deb && \
     dpkg -i midori_0.5.11-ds1-2_amd64.deb
-    
+
+RUN mkdir -p /etc/pki/tls/certs && \
+    echo -e "US\nGeorgia\nAtlanta\nNA\nNA\ncodenvy.io\nnobody@gmail.com\n" > sslinput | \
+    openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -in sslinput && \
+    chmod 444 /etc/pki/tls/certs/novnc.pem && sudo rm sslinput
+#Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
+
 USER user
 
 # download and install noVNC, configure Blackbox
@@ -80,13 +86,6 @@ ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
 RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\nexport M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\nexport TOMCAT_HOME=/home/user/tomcat8\nexport PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH" >> /home/user/.bashrc && \
     sudo locale-gen en_US.UTF-8
-    
-RUN sudo mkdir -p /etc/pki/tls/certs && \
-    sudo echo -e "US\nGeorgia\nAtlanta\nNA\nNA\ncodenvy.io\nnobody@gmail.com\n" > sslinput | \
-    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -in sslinput && \
-    sudo chmod 444 /etc/pki/tls/certs/novnc.pem && sudo rm sslinput
-
-#Then update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
 WORKDIR /projects
 RUN mkdir /projects/KeepAlive
