@@ -37,7 +37,7 @@ RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 
     dpkg -i midori_0.5.11-ds1-2_amd64.deb
 
 RUN mkdir -p /etc/pki/tls/certs && \
-    echo -e "US\n\
+    echo "US\n\
     Georgia\n\
     Atlanta\n\
     NA\n\
