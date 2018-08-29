@@ -82,14 +82,8 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\nexport M2_HOME=/home/us
     sudo locale-gen en_US.UTF-8
     
 RUN sudo mkdir -p /etc/pki/tls/certs && \
-    echo -e $'US\n\
-    Georgia\n\
-    Atlanta\n\
-    NA\n\
-    NA\n\
-    codenvy.io\n\
-    nobody@gmail.com\n' | \
-    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 && \
+    echo -e "US\nGeorgia\nAtlanta\nNA\nNA\ncodenvy.io\nnobody@gmail.com\n" | \
+    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -in - && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 
 #Then update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
