@@ -82,7 +82,8 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\nexport M2_HOME=/home/us
     sudo locale-gen en_US.UTF-8
     
 RUN sudo mkdir -p /etc/pki/tls/certs && \
-    echo -e $'US\nGeorgia\n\
+    echo -e $'US\n\
+    Georgia\n\
     Atlanta\n\
     NA\n\
     NA\n\
