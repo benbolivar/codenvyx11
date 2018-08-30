@@ -86,8 +86,9 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
-#RUN sudo mkdir -p /projects/KeepAlive
+
 WORKDIR /projects/KeepAlive
+RUN sudo mkdir /projects/KeepAlive
 ADD keepalive.html /projects/KeepAlive
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
