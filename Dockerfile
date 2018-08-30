@@ -27,8 +27,9 @@ RUN sudo apt-get update -qqy && \
   net-tools \
   blackbox \
   rxvt-unicode \
-  xfonts-terminus && \
-  sudo rm -rf /var/lib/apt/lists/*
+  xfonts-terminus
+#  && \
+#  sudo rm -rf /var/lib/apt/lists/*
 
 USER root
 
