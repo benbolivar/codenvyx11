@@ -84,7 +84,7 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\n\
 export M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\n\
 export TOMCAT_HOME=/home/user/tomcat8\n\
 export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\n\
-cp -rf /home/user/KeepAlive /projects\n" >> /home/user/.bashrc && \
+cp -rf /home/user/KeepAlive /projects\n" | sudo tee -a /home/user/.bashrc && \
 sudo locale-gen en_US.UTF-8
 
 RUN sudo mkdir -p /etc/pki/tls/certs && \
