@@ -27,9 +27,9 @@ RUN sudo apt-get update -qqy && \
   net-tools \
   blackbox \
   rxvt-unicode \
-  xfonts-terminus
-# && \
-#  sudo rm -rf /var/lib/apt/lists/*
+  xfonts-terminus && \
+  sudo rm -rf /var/lib/apt/lists/*
+
 USER root
 
 RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11  && \
@@ -38,12 +38,10 @@ RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 
 
 USER user
 
-# download and install noVNC, configure Blackbox
-
+# download and install noVNC, Firefox, configure Blackbox
 RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
-    sudo wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" && \
     sudo apt-get install -y firefox && \
     sudo mkdir -p /etc/X11/blackbox && \
     echo "[begin] (Blackbox) \n \
@@ -88,9 +86,9 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
 
-WORKDIR /projects2
-RUN sudo mkdir /projects2/KeepAlive
-ADD keepalive.html /projects2/KeepAlive
+WORKDIR /projects
+
+ADD keepalive.html /home/user
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
     cd /home/user && sleep 3 & \
