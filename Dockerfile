@@ -84,7 +84,7 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\n\
 export M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\n\
 export TOMCAT_HOME=/home/user/tomcat8\n\
 export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\n\
-if [ ! -f /projects/KeepAlive/keepalive.html ]; then; cp -rf /home/user/KeepAlive /projects; fi" | sudo tee -a /home/user/.bashrc && \
+if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\ncp -rf /home/user/KeepAlive /projects\nfi" | sudo tee -a /home/user/.bashrc && \
 sudo locale-gen en_US.UTF-8
 
 RUN sudo mkdir -p /etc/pki/tls/certs && \
