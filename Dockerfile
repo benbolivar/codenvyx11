@@ -82,12 +82,13 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\nexport M2_HOME=/home/us
     sudo locale-gen en_US.UTF-8
 
 RUN sudo mkdir -p /etc/pki/tls/certs && \
-    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -subj "/C=GB/ST=London/L=London/O=NA/OU=NA/CN=codenvy.io" && \
+    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
+         -subj "/C=PH/ST=Cebu/L=Cebu/O=NA/OU=NA/CN=codenvy.io" && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
 
-WORKDIR /projects/KeepAlive
+WORKDIR /projects
 RUN sudo mkdir /projects/KeepAlive
 ADD keepalive.html /projects/KeepAlive
 
