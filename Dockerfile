@@ -88,8 +88,8 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 
 
 #WORKDIR /projects
-RUN sudo mkdir -p /projects/KeepAlive
-ADD keepalive.html /projects/KeepAlive
+RUN sudo mkdir -p /home/user/KeepAlive
+ADD keepalive.html /home/user/KeepAlive
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
     cd /home/user && sleep 3 & \
