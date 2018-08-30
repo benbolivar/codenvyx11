@@ -54,6 +54,9 @@ RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
 
+RUN sudo mkdir -p /home/user/KeepAlive
+ADD keepalive.html /home/user/KeepAlive
+
 EXPOSE 6080 32745
 ENV DISPLAY :20.0
 
@@ -86,10 +89,7 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
-
 #WORKDIR /projects
-RUN sudo mkdir -p /home/user/KeepAlive
-ADD keepalive.html /home/user/KeepAlive
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
     cd /home/user && sleep 3 & \
