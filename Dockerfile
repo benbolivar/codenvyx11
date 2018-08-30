@@ -89,8 +89,8 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
-#WORKDIR /projects
+WORKDIR /projects
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
-    cd /projects && cp -rf /home/user/KeepAlive /projects && sleep 3 & \
+    cp -rf /home/user/KeepAlive /projects && sleep 3 & \
     sleep 365d
