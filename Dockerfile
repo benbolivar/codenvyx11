@@ -92,5 +92,5 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 #WORKDIR /projects
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
-    cd /home/user && sleep 3 & \
+    cd /projects && cp -rf /home/user/KeepAlive /projects && sleep 3 & \
     sleep 365d
