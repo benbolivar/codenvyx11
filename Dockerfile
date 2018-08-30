@@ -36,11 +36,6 @@ RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 
     wget http://archive.ubuntu.com/ubuntu/pool/universe/m/midori/midori_0.5.11-ds1-2_amd64.deb && \
     dpkg -i midori_0.5.11-ds1-2_amd64.deb
 
-RUN mkdir -p /etc/pki/tls/certs && \
-    openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -subj "/C=GB/ST=London/L=London/O=NA/OU=NA/CN=codenvy.io" && \
-    chmod 444 /etc/pki/tls/certs/novnc.pem
-#Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
-
 USER user
 
 # download and install noVNC, configure Blackbox
@@ -89,6 +84,13 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\nexport M2_HOME=/home/us
 WORKDIR /projects
 RUN mkdir /projects/KeepAlive
 ADD keepalive.html /projects/KeepAlive
+
+RUN sudo mkdir -p /etc/pki/tls/certs && \
+    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 365 -subj "/C=GB/ST=London/L=London/O=NA/OU=NA/CN=codenvy.io" && \
+    sudo chmod 444 /etc/pki/tls/certs/novnc.pem
+#Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
+
+
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
     cd /home/user && sleep 3 & \
