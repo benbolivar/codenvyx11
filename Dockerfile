@@ -94,7 +94,6 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 
 #WORKDIR /projects
 
-CMD ["/usr/bin/supervisord", "-c", "/opt/supervisord.conf"]
-CMD ["/bin/bash"]
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/opt/supervisord.conf"]
 #CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
 #    sleep 365d
