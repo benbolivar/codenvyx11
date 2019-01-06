@@ -95,6 +95,6 @@ sudo locale-gen en_US.UTF-8
 
 WORKDIR /projects
 
-CMD ["/usr/bin/supervisord", "-c", "/opt/supervisord.conf"]
-#CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
-#    sleep 365d
+#CMD ["/usr/bin/supervisord", "-c", "/opt/supervisord.conf"]
+CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
+    sleep 365d
