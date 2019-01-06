@@ -28,8 +28,7 @@ RUN sudo apt-get update -qqy && \
   blackbox \
   rxvt-unicode \
   xfonts-terminus
-#  && \
-#  sudo rm -rf /var/lib/apt/lists/*
+
 
 USER root
 
@@ -95,6 +94,6 @@ sudo locale-gen en_US.UTF-8
 
 WORKDIR /projects
 
-#CMD ["/usr/bin/supervisord", "-c", "/opt/supervisord.conf"]
-CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
-    sleep 365d
+CMD ["/usr/bin/supervisord", "-c", "/opt/supervisord.conf & sleep 365d"]
+#CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
+#    sleep 365d
