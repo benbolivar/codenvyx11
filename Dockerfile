@@ -86,14 +86,14 @@ export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\n\
 if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi" | sudo tee -a /home/user/.bashrc && \
 sudo locale-gen en_US.UTF-8
 
-#RUN sudo mkdir -p /etc/pki/tls/certs && \
-#    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
-#         -subj "/C=PH/ST=Cebu/L=Cebu/O=NA/OU=NA/CN=codenvy.io" && \
-#    sudo chmod 444 /etc/pki/tls/certs/novnc.pem
+RUN sudo mkdir -p /etc/pki/tls/certs && \
+    sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
+         -subj "/C=PH/ST=Cebu/L=Cebu/O=NA/OU=NA/CN=codenvy.io" && \
+    sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
 WORKDIR /projects
 
-CMD ["/usr/bin/supervisord", "-c", "/opt/supervisord.conf & sleep 365d"]
-#CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
-#    sleep 365d
+#CMD ["/usr/bin/supervisord", "-c", "/opt/supervisord.conf & sleep 365d"]
+CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
+    sleep 365d
