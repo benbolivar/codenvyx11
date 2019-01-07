@@ -29,7 +29,6 @@ RUN sudo apt-get update -qqy && \
   rxvt-unicode \
   xfonts-terminus
 
-
 USER root
 
 RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11  && \
@@ -38,7 +37,7 @@ RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 
 
 USER user
 
-# download and install noVNC, Firefox, configure Blackbox
+# download and install noVNC, Firefox, Eclipse CDT, configure Blackbox
 RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
@@ -105,14 +104,13 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
-WORKDIR /projects
-
+# zmart/eclipse-cdt for unattended CDT install
+USER root
 ENV USER_NAME=user
 ENV HOME=/home/${USER_NAME}
 
 RUN apt-get update && apt-get install -y software-properties-common 
-RUN apt-get update && apt-get install -y default-jre libxext-dev libxrender-dev libxtst-dev && apt-get -y autoremove 
-RUN apt-get update && apt-get install -y wget
+RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev && apt-get -y autoremove
 RUN apt-get install -y libgtk2.0-0 libcanberra-gtk-module
 RUN apt-get install -y g++ libboost-all-dev build-essential gdb cmake
 
@@ -127,6 +125,10 @@ RUN chmod +x /opt/eclipse/eclipse
 #&& useradd -ms /bin/bash ${USER_NAME}
 
 RUN mkdir -p ${ECLIPSE_DOT} ${ECLIPSE_WORKSPACE} && chown -R ${USER_NAME}:${USER_NAME} ${ECLIPSE_WORKSPACE} ${ECLIPSE_DOT}
+
+USER user
+
+#WORKDIR /projects
 
 ENTRYPOINT /usr/bin/supervisord -c /opt/supervisord.conf & /bin/bash
 #CMD /usr/bin/supervisord -c /opt/supervisord.conf & sleep 365d
