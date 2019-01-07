@@ -106,6 +106,6 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 
 WORKDIR /projects
 
-ENTRYPOINT /usr/bin/supervisord -c /opt/supervisord.conf & /bin/bash
-#CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
-#    sleep 365d
+#ENTRYPOINT /usr/bin/supervisord -c /opt/supervisord.conf & /bin/bash
+CMD /usr/bin/supervisord -c /opt/supervisord.conf & \
+    sleep 365d
