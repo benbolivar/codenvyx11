@@ -48,6 +48,7 @@ RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     [exec] (Terminal)    {urxvt -fn "xft:Terminus:size=14"} \n \
     [exec] (Browser)     {midori} \n \
     [exec] (Firefox)     {firefox} \n \
+    [exec] (Eclipse CDT) {/opt/eclipse/eclipse} \n \
     [end]" | sudo tee -a /etc/X11/blackbox/blackbox-menu
 
 ADD index.html  /opt/noVNC/
@@ -83,7 +84,7 @@ ENV PATH=$M2_HOME/bin:$PATH
 #    sudo rm -rf /home/user/tomcat8/webapps/*
 
 # Option 2
-RUN sudo apt-get -qqy install openjdk-11-jdk eclipse eclipse-cdt g++
+RUN sudo apt-get -qqy install openjdk-8-jre
 RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
   sudo wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/
 RUN sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | sudo tar -zx --strip-components=1 -C /home/user/tomcat8 && \
