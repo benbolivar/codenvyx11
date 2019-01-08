@@ -107,15 +107,15 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 # zmart/eclipse-cdt for unattended CDT install
 USER root
 ENV USER_NAME=user
-ENV HOME=/home/${USER_NAME}
+#ENV HOME=/home/${USER_NAME}
+ENV HOME=/projects
 
 RUN apt-get update && apt-get install -y software-properties-common 
 RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev && apt-get -y autoremove
 RUN apt-get install -y libgtk2.0-0 libcanberra-gtk-module
 RUN apt-get install -y g++ libboost-all-dev build-essential gdb cmake
 
-#ENV ECLIPSE_WORKSPACE=${HOME}/eclipse-workspace
-ENV ECLIPSE_WORKSPACE=/projects
+ENV ECLIPSE_WORKSPACE=${HOME}/eclipse-workspace
 ENV ECLIPSE_DOT=${HOME}/.eclipse
 
 ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
@@ -126,7 +126,7 @@ RUN chmod +x /opt/eclipse/eclipse
 #&& useradd -ms /bin/bash ${USER_NAME}
 
 #RUN mkdir -p ${ECLIPSE_DOT} ${ECLIPSE_WORKSPACE} && chown -R ${USER_NAME}:${USER_NAME} ${ECLIPSE_WORKSPACE} ${ECLIPSE_DOT}
-RUN mkdir -p ${ECLIPSE_DOT} && chown -R ${USER_NAME}:${USER_NAME} ${ECLIPSE_DOT}
+#RUN mkdir -p ${ECLIPSE_DOT} && chown -R ${USER_NAME}:${USER_NAME} ${ECLIPSE_DOT}
 
 USER user
 
