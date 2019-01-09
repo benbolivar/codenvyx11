@@ -3,6 +3,7 @@ FROM ubuntu
 EXPOSE 8080 8000
 
 ENV TERM xterm
+ENV DISP_SIZE 1600x900x16
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata locales && \
