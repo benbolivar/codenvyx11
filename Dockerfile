@@ -108,8 +108,8 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 # zmart/eclipse-cdt for unattended CDT install
 USER root
 ENV USER_NAME=user
-#ENV HOME=/home/${USER_NAME}
-ENV HOME=/projects
+ENV HOME=/home/${USER_NAME}
+#ENV HOME=/projects
 
 RUN apt-get update && apt-get install -y software-properties-common 
 RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev && apt-get -y autoremove
