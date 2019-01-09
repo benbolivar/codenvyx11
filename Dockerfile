@@ -60,30 +60,13 @@ ADD keepalive.html /home/user/KeepAlive
 EXPOSE 6080 32745
 ENV DISPLAY :20.0
 
-#ENV MAVEN_VERSION=3.3.9 \
-#    JAVA_VERSION=8u181 \
-#    JAVA_VERSION_PREFIX=1.8.0_181 \
-#    TOMCAT_HOME=/home/user/tomcat8
 ENV MAVEN_VERSION=3.3.9 \
     TOMCAT_HOME=/home/user/tomcat8
 
-#ENV JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX \
-#M2_HOME=/home/user/apache-maven-$MAVEN_VERSION
 ENV M2_HOME=/home/user/apache-maven-$MAVEN_VERSION
 
-#ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 ENV PATH=$M2_HOME/bin:$PATH
 
-# Option 1
-#RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
-#  sudo wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" -qO- \
-#  "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-$JAVA_VERSION-linux-x64.tar.gz" | sudo tar -zx -C /opt/ && \
-#  sudo wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/
-
-#RUN sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | sudo tar -zx --strip-components=1 -C /home/user/tomcat8 && \
-#    sudo rm -rf /home/user/tomcat8/webapps/*
-
-# Option 2
 RUN sudo apt-get -qqy install openjdk-8-jre
 RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
   sudo wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/
@@ -108,8 +91,8 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 # zmart/eclipse-cdt for unattended CDT install
 USER root
 ENV USER_NAME=user
-ENV HOME=/home/${USER_NAME}
-#ENV HOME=/projects
+#ENV HOME=/home/${USER_NAME}
+ENV HOME=/projects
 
 RUN apt-get update && apt-get install -y software-properties-common 
 RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev && apt-get -y autoremove
