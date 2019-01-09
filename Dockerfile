@@ -106,7 +106,8 @@ ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/ph
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
 RUN wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz
-RUN chmod +x /opt/eclipse/eclipse 
+RUN chmod +x /opt/eclipse/eclipse
+RUN sudo sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
 #&& useradd -ms /bin/bash ${USER_NAME}
 
 #RUN mkdir -p ${ECLIPSE_DOT} ${ECLIPSE_WORKSPACE} && chown -R ${USER_NAME}:${USER_NAME} ${ECLIPSE_WORKSPACE} ${ECLIPSE_DOT}
