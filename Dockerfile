@@ -105,13 +105,11 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
-WORKDIR /projects
-
 # zmart/eclipse-cdt for unattended CDT install
 USER root
 ENV USER_NAME=user
-#ENV HOME=/home/${USER_NAME}
-ENV HOME=/projects
+ENV HOME=/home/${USER_NAME}
+#ENV HOME=/projects
 
 RUN apt-get update && apt-get install -y software-properties-common 
 RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev && apt-get -y autoremove
@@ -132,6 +130,8 @@ RUN chmod +x /opt/eclipse/eclipse
 #RUN mkdir -p ${ECLIPSE_DOT} && chown -R ${USER_NAME}:${USER_NAME} ${ECLIPSE_DOT}
 
 USER user
+
+WORKDIR /projects
 
 #ENTRYPOINT /usr/bin/supervisord -c /opt/supervisord.conf & /bin/bash
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & sleep 365d
