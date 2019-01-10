@@ -99,9 +99,6 @@ RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev 
 RUN apt-get install -y libgtk2.0-0 libcanberra-gtk-module
 RUN apt-get install -y g++ libboost-all-dev build-essential gdb cmake
 
-ENV ECLIPSE_WORKSPACE=${HOME}/eclipse-workspace
-ENV ECLIPSE_DOT=${HOME}/.eclipse
-
 ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
@@ -116,6 +113,9 @@ RUN sudo sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
 USER user
 
 WORKDIR /projects
+
+ENV ECLIPSE_WORKSPACE=/projects/eclipse-workspace
+ENV ECLIPSE_DOT=/projects/.eclipse
 
 #ENTRYPOINT /usr/bin/supervisord -c /opt/supervisord.conf & /bin/bash
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & sleep 365d
