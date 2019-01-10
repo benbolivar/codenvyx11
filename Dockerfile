@@ -75,14 +75,16 @@ RUN sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/a
 
 ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
+
+# Add run commands in /home/user/.bashrc
 RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\n\
 export M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\n\
 export TOMCAT_HOME=/home/user/tomcat8\n\
 export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\n\
 if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi\n\
 if [ ! -f /projects/eclipse-workspace ]\nthen\nsleep 5\nmkdir -p /projects/.eclipse /projects/eclipse-workspace\n\
-sudo ln -s /projects/.eclipse /home/user/.eclipse\n\
-chown -R user:user /projects/eclipse-workspace /projects/.eclipse\nfi" | sudo tee -a /home/user/.bashrc
+chown -R user:user /projects/eclipse-workspace /projects/.eclipse\nfi\n\
+sudo ln -s /projects/.eclipse /home/user/.eclipse" | sudo tee -a /home/user/.bashrc
 
 RUN sudo locale-gen en_US.UTF-8
 
@@ -96,7 +98,6 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
 USER root
 ENV USER_NAME=user
 ENV HOME=/home/${USER_NAME}
-#ENV HOME=/projects
 
 RUN apt-get update && apt-get install -y software-properties-common 
 RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev && apt-get -y autoremove
@@ -111,9 +112,6 @@ RUN chmod +x /opt/eclipse/eclipse
 RUN sudo sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
 #&& useradd -ms /bin/bash ${USER_NAME}
 
-#RUN mkdir -p ${ECLIPSE_DOT} ${ECLIPSE_WORKSPACE} && chown -R ${USER_NAME}:${USER_NAME} ${ECLIPSE_WORKSPACE} ${ECLIPSE_DOT}
-#RUN mkdir -p ${ECLIPSE_DOT} && chown -R ${USER_NAME}:${USER_NAME} ${ECLIPSE_DOT}
-
 USER user
 
 WORKDIR /projects
@@ -121,5 +119,4 @@ WORKDIR /projects
 ENV ECLIPSE_WORKSPACE=/projects/eclipse-workspace
 ENV ECLIPSE_DOT=/projects/.eclipse
 
-#ENTRYPOINT /usr/bin/supervisord -c /opt/supervisord.conf & /bin/bash
 CMD /usr/bin/supervisord -c /opt/supervisord.conf & sleep 365d
