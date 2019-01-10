@@ -79,8 +79,11 @@ RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\n\
 export M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\n\
 export TOMCAT_HOME=/home/user/tomcat8\n\
 export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\n\
-if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi" | sudo tee -a /home/user/.bashrc && \
-sudo locale-gen en_US.UTF-8
+if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi\n\
+if [ ! -f /projects/eclipse-workspace ]\nthen\nsleep 5\nmkdir -p /projects/.eclipse /projects/eclipse-workspace\n\
+chown -R user:user /projects/eclipse-workspace /projects/.eclipse\nfi" | sudo tee -a /home/user/.bashrc
+
+RUN sudo locale-gen en_US.UTF-8
 
 RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
