@@ -83,8 +83,9 @@ export TOMCAT_HOME=/home/user/tomcat8\n\
 export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\n\
 if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi\n\
 if [ ! -f /projects/eclipse-workspace ]\nthen\nsleep 5\nmkdir -p /projects/.eclipse /projects/eclipse-workspace\n\
-chown -R user:user /projects/eclipse-workspace /projects/.eclipse\nfi\n\
-sudo ln -s /projects/.eclipse /home/user/.eclipse" | sudo tee -a /home/user/.bashrc
+sudo chown -R user:user /projects/eclipse-workspace /projects/.eclipse\nfi\n\
+sudo ln -s /projects/.eclipse /home/user/.eclipse\n\
+sudo chown -h user:user /home/user/.eclipse" | sudo tee -a /home/user/.bashrc
 
 RUN sudo locale-gen en_US.UTF-8
 
