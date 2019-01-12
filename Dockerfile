@@ -123,4 +123,4 @@ ENV ECLIPSE_WORKSPACE=/projects/eclipse-workspace
 ENV ECLIPSE_DOT=/projects/.eclipse
 ENV DELAY=55
 
-CMD sudo /usr/bin/supervisord -c /opt/supervisord.conf -l /home/user/supervisor.log -e trace & sleep 365d
+CMD sudo /usr/bin/supervisord -c /opt/supervisord.conf & sleep 365d
