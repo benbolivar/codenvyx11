@@ -121,5 +121,6 @@ WORKDIR /projects
 
 ENV ECLIPSE_WORKSPACE=/projects/eclipse-workspace
 ENV ECLIPSE_DOT=/projects/.eclipse
+ENV DELAY=50
 
 CMD /usr/bin/supervisord -c /opt/supervisord.conf -l /home/user/supervisor.log -e trace & sleep 365d
