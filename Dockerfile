@@ -83,11 +83,6 @@ export TOMCAT_HOME=/home/user/tomcat8\n\
 export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\n\
 if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi\n\
 sudo date >> /home/user/date.log" | sudo tee -a /home/user/.bashrc
-#if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi\n\
-#if [ ! -f /projects/eclipse-workspace ]\nthen\nsleep 5\nmkdir -p /projects/.eclipse /projects/eclipse-workspace\n\
-#sudo chown -R user:user /projects/eclipse-workspace /projects/.eclipse\nfi\n\
-#sudo ln -s /projects/.eclipse /home/user/.eclipse\n\
-#sudo chown -h user:user /home/user/.eclipse" | sudo tee -a /home/user/.bashrc
 
 RUN sudo locale-gen en_US.UTF-8
 
@@ -97,7 +92,7 @@ RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 
-# zmart/eclipse-cdt for unattended CDT install
+# Thanks to zmart/eclipse-cdt for ideas on unattended CDT install
 USER root
 ENV USER_NAME=user
 ENV HOME=/home/${USER_NAME}
@@ -111,9 +106,7 @@ ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/ph
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
 RUN wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz
-#RUN chmod +x /opt/eclipse/eclipse
 RUN sudo sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
-#&& useradd -ms /bin/bash ${USER_NAME}
 
 USER user
 
