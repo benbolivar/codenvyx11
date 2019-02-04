@@ -108,6 +108,9 @@ ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 RUN wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz
 RUN sudo sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
 
+ADD --chown=user:user menu /home/user/.menu
+ADD --chown=user:user init /home/user/.init
+
 USER user
 
 WORKDIR /projects
