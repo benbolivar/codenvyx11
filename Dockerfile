@@ -26,7 +26,7 @@ RUN sudo apt-get update -qqy && \
   xvfb \
   subversion \
   net-tools \
-  blackbox \
+  fluxbox \
   rxvt-unicode \
   xfonts-terminus
 
