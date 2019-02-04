@@ -4,9 +4,10 @@ EXPOSE 8080 8000 5900
 
 ENV TERM xterm
 ENV DISP_SIZE 1600x900x16
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata locales && \
+RUN apt-get install -y tzdata locales && \
     cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 
 RUN apt-get update && \
