@@ -41,8 +41,8 @@ USER user
 # download and install noVNC, Firefox, Eclipse CDT, configure Blackbox
 RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
-    wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
-    sudo apt-get install -y firefox
+    wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify
+#    sudo apt-get install -y firefox
     
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
