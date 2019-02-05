@@ -85,6 +85,12 @@ if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user
 sudo date >> /home/user/date.log" | sudo tee -a /home/user/.bashrc
 
 RUN sudo locale-gen en_US.UTF-8
+#echo "Asia/Manila" > /etc/timezone
+#dpkg-reconfigure -f noninteractive tzdata
+#sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+#echo 'LANG="en_US.UTF-8"'>/etc/default/locale
+#dpkg-reconfigure --frontend=noninteractive locales
+#update-locale LANG=de_AT.UTF-8
 
 RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
