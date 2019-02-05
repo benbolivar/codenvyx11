@@ -34,8 +34,9 @@ RUN sudo apt-get update -qqy && \
 
 USER root
 
-RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy
-
+RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy && \
+    wget http://archive.ubuntu.com/ubuntu/pool/universe/m/midori/midori_0.5.11-ds1-2_amd64.deb && \
+    dpkg -i midori_0.5.11-ds1-2_amd64.deb
 USER user
 
 # download and install noVNC, Firefox, Eclipse CDT, configure Blackbox
