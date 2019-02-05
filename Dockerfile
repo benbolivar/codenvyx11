@@ -6,6 +6,7 @@ EXPOSE 8080 8000 5900
 ENV TERM xterm
 ENV DISP_SIZE 1600x900x16
 ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG C perl -e exit
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
 RUN apt-get install -y tzdata locales && \
@@ -34,7 +35,7 @@ RUN sudo apt-get update -qqy && \
 
 USER root
 
-RUN apt-get install -y libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy && \
+RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy && \
     wget http://archive.ubuntu.com/ubuntu/pool/universe/m/midori/midori_0.5.11-ds1-2_amd64.deb && \
     dpkg -i midori_0.5.11-ds1-2_amd64.deb
 USER user
