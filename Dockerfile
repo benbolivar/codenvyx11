@@ -6,7 +6,8 @@ EXPOSE 8080 8000 5900
 ENV TERM xterm
 ENV DISP_SIZE 1600x900x16
 ENV DEBIAN_FRONTEND=noninteractive
-ENV LANG C perl -e exit
+#ENV LANG C perl -e exit
+ENV SWT_GTK3=0
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
 RUN apt-get install -y tzdata locales && \
@@ -43,7 +44,10 @@ USER user
 # download and install noVNC, Firefox, Eclipse CDT, configure Blackbox
 RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
-    wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify
+    wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
+wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" && \
+mkdir /opt/firefox && \
+tar xjf FirefoxSetup.tar.bz2 -C /opt/firefox/
 #    sudo apt-get install -y firefox
     
 ADD index.html  /opt/noVNC/
