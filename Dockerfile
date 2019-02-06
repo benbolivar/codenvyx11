@@ -71,7 +71,6 @@ RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VE
 RUN sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | sudo tar -zx --strip-components=1 -C /home/user/tomcat8 && \
     sudo rm -rf /home/user/tomcat8/webapps/*
 
-ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
 
 # Add run commands in /home/user/.bashrc
@@ -84,13 +83,13 @@ export PATH=$M2_HOME/bin:$PATH\n\
 if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi\n\
 sudo date >> /home/user/date.log" | sudo tee -a /home/user/.bashrc
 
-RUN sudo locale-gen en_US.UTF-8
+#RUN sudo locale-gen en_US.UTF-8
 #echo "Asia/Manila" > /etc/timezone
 #dpkg-reconfigure -f noninteractive tzdata
-#sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-#echo 'LANG="en_US.UTF-8"'>/etc/default/locale
-#dpkg-reconfigure --frontend=noninteractive locales
-#update-locale LANG=en_US.UTF-8
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8
 
 RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
