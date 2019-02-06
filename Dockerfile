@@ -1,4 +1,3 @@
-#FROM ubuntu
 FROM openjdk:8u181-jre-slim-stretch
 
 EXPOSE 8080 8000 5900
@@ -6,13 +5,12 @@ EXPOSE 8080 8000 5900
 ENV TERM xterm
 ENV DISP_SIZE 1600x900x16
 ENV DEBIAN_FRONTEND=noninteractive
-#ENV LANG C perl -e exit
 ENV SWT_GTK3=0
 ENV LANG en_US.UTF-8
 
-#RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales && \
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales sudo procps wget unzip mc curl \
-    gnupg2 vim && \
+    gnupg2 vim supervisor x11vnc xvfb subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
+    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
     \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
@@ -24,19 +22,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialo
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
     echo "secret\nsecret" | passwd user
-#    apt-get update && \
-#    apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
 
-# install midori (browser), xserver, blackbox
+#USER user
 
-USER user
+#RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools fluxbox xterm xfonts-terminus
 
-#RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools fluxbox rxvt-unicode xfonts-terminus
-RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools fluxbox xterm xfonts-terminus
+#USER root
 
-USER root
-
-RUN apt-get install -y libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy
+#RUN apt-get install -y libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 \
+#    dbus-x11 python-numpy
     
 USER user
 
@@ -65,8 +59,8 @@ ENV PATH=$M2_HOME/bin:/opt/firefox/firefox:$PATH
 
 #RUN sudo apt-get -qqy install openjdk-8-jre
 RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
-  sudo wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/
-RUN sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | sudo tar -zx --strip-components=1 -C /home/user/tomcat8 && \
+    sudo wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/ && \
+    sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | sudo tar -zx --strip-components=1 -C /home/user/tomcat8 && \
     sudo rm -rf /home/user/tomcat8/webapps/*
 
 
