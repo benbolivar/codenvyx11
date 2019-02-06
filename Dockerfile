@@ -8,9 +8,11 @@ ENV DISP_SIZE 1600x900x16
 ENV DEBIAN_FRONTEND=noninteractive
 #ENV LANG C perl -e exit
 ENV SWT_GTK3=0
+ENV LANG en_US.UTF-8
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales && \
-    cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales
+#&& \
+#    cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 
 #RUN sudo locale-gen en_US.UTF-8
 #echo "Asia/Manila" > /etc/timezone
@@ -18,7 +20,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialo
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
     dpkg-reconfigure --frontend=noninteractive locales && \
-    update-locale LANG=en_US.UTF-8
+    update-locale LANG=en_US.UTF-8 && \
+    echo "Asia/Manila" > /etc/timezone
+    dpkg-reconfigure -f noninteractive tzdata
 
 RUN apt-get update && \
     apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
@@ -67,7 +71,6 @@ RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VE
 RUN sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | sudo tar -zx --strip-components=1 -C /home/user/tomcat8 && \
     sudo rm -rf /home/user/tomcat8/webapps/*
 
-ENV LANG en_US.UTF-8
 
 # Add run commands in /home/user/.bashrc
 #RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\n\
