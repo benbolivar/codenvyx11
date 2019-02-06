@@ -10,25 +10,22 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV SWT_GTK3=0
 ENV LANG en_US.UTF-8
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales
-#&& \
-#    cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
-
-#RUN sudo locale-gen en_US.UTF-8
-#echo "Asia/Manila" > /etc/timezone
-#dpkg-reconfigure -f noninteractive tzdata
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+#RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales && \
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales sudo procps wget unzip mc curl \
+    gnupg2 vim && \
+    \
+    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=en_US.UTF-8 && \
     echo "Asia/Manila" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
-
-RUN apt-get update && \
-    apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
     echo "secret\nsecret" | passwd user
+#    apt-get update && \
+#    apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
 
 # install midori (browser), xserver, blackbox
 
@@ -63,7 +60,7 @@ ENV MAVEN_VERSION=3.3.9 \
 
 ENV M2_HOME=/home/user/apache-maven-$MAVEN_VERSION
 
-ENV PATH=$M2_HOME/bin:$PATH
+ENV PATH=$M2_HOME/bin:/opt/firefox/firefox:$PATH
 
 #RUN sudo apt-get -qqy install openjdk-8-jre
 RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
@@ -93,16 +90,15 @@ USER root
 ENV USER_NAME=user
 ENV HOME=/home/${USER_NAME}
 
-RUN apt-get update && apt-get install -y software-properties-common 
-RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev && apt-get -y autoremove
-RUN apt-get install -y libgtk2.0-0 libcanberra-gtk-module
-RUN apt-get install -y g++ libboost-all-dev build-essential gdb cmake
+RUN apt-get update && apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev libgtk2.0-0 \
+    libcanberra-gtk-module g++ libboost-all-dev build-essential gdb cmake && \
+    apt-get -y autoremove
 
 ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
-RUN wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz
-RUN sudo sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
+RUN wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz && \
+    sudo sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
 
 ADD --chown=user:user menu /home/user/.menu
 ADD --chown=user:user init /home/user/.init
