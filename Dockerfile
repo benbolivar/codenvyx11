@@ -31,7 +31,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialo
 
 USER user
 
-RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools fluxbox rxvt-unicode xfonts-terminus
+#RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools fluxbox rxvt-unicode xfonts-terminus
+RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools fluxbox xterm xfonts-terminus
 
 USER root
 
