@@ -9,9 +9,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 #ENV LANG C perl -e exit
 ENV SWT_GTK3=0
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
-RUN apt-get install -y tzdata locales && \
-    cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales 
+#&& \
+#    cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 
 #RUN sudo locale-gen en_US.UTF-8
 #echo "Asia/Manila" > /etc/timezone
@@ -31,23 +31,11 @@ RUN apt-get update && \
 
 USER user
 
-RUN sudo apt-get update -qqy && \
-  sudo apt-get -qqy install \
-  supervisor \
-  x11vnc \
-  xvfb \
-  subversion \
-  net-tools \
-  fluxbox \
-  rxvt-unicode \
-  xfonts-terminus
+RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools fluxbox rxvt-unicode xfonts-terminus
 
 USER root
 
 RUN apt-get install -y libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy
-    #wget http://archive.ubuntu.com/ubuntu/pool/universe/m/midori/midori_0.5.11-ds1-2_amd64.deb && \
-    #dpkg -i midori_0.5.11-ds1-2_amd64.deb
-    
     
 USER user
 
@@ -55,9 +43,8 @@ USER user
 RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
-sudo wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" && \
-sudo tar xjf FirefoxSetup.tar.bz2 -C /opt/
-#    sudo apt-get install -y firefox
+    sudo wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" && \
+    sudo tar xjf FirefoxSetup.tar.bz2 -C /opt/
     
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
