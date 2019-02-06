@@ -13,6 +13,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialo
 RUN apt-get install -y tzdata locales && \
     cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 
+#RUN sudo locale-gen en_US.UTF-8
+#echo "Asia/Manila" > /etc/timezone
+#dpkg-reconfigure -f noninteractive tzdata
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8
+
 RUN apt-get update && \
     apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
@@ -39,6 +47,8 @@ USER root
 RUN apt-get install -y libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy
     #wget http://archive.ubuntu.com/ubuntu/pool/universe/m/midori/midori_0.5.11-ds1-2_amd64.deb && \
     #dpkg -i midori_0.5.11-ds1-2_amd64.deb
+    
+    
 USER user
 
 # download and install noVNC, Firefox, Eclipse CDT, configure Blackbox
@@ -82,14 +92,6 @@ export TOMCAT_HOME=/home/user/tomcat8\n\
 export PATH=$M2_HOME/bin:$PATH\n\
 if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi\n\
 sudo date >> /home/user/date.log" | sudo tee -a /home/user/.bashrc
-
-#RUN sudo locale-gen en_US.UTF-8
-#echo "Asia/Manila" > /etc/timezone
-#dpkg-reconfigure -f noninteractive tzdata
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
-    dpkg-reconfigure --frontend=noninteractive locales && \
-    update-locale LANG=en_US.UTF-8
 
 RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
