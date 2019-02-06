@@ -18,13 +18,13 @@
 [encoding] {UTF-8}
       [exec] (Firefox) {/opt/firefox/firefox}
       [exec] (Terminal) {xterm -fa "xft:Terminus:size=14"}
-      [exec] (File Manager) {urxvt -fn "xft:Terminus:size=14" -e mc}
+      [exec] (File Manager) {xterm -fa "xft:Terminus:size=14" -e mc}
       [exec] (Eclipse CDT) {/opt/eclipse/eclipse}
 [submenu] (Editors)
-      [exec]   (vim) {urxvt -fn "xft:Terminus:size=14" -e vim}
+      [exec]   (vim) {xterm -fa "xft:Terminus:size=14" -e vim}
 [end]
 [submenu] (System Tools)
-      [exec]   (top) {urxvt -fn "xft:Terminus:size=14" -e top}
+      [exec]   (top) {xterm -fa "xft:Terminus:size=14" -e top}
 [end]
 [submenu] (Fluxbox menu)
       [config] (Configure)
