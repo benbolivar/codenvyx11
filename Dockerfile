@@ -45,7 +45,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     libcanberra-gtk-module g++ gdb cmake && \
     apt-get -y autoremove && \
     wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz && \
-    sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
+    sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini && \
     \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
