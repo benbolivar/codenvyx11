@@ -6,8 +6,6 @@ ENV TERM xterm
 ENV DISP_SIZE 1600x900x16
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SWT_GTK3=0
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
 
 EXPOSE 6080 32745
 ENV DISPLAY :20.0
@@ -26,17 +24,19 @@ ENV HOME=/home/${USER_NAME}
 ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
+#    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+#    echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
 #    dpkg-reconfigure --frontend=noninteractive locales && \
+#    update-locale LANG=en_US.UTF-8 && \
+#    echo "Asia/Manila" > /etc/timezone && \
 #    dpkg-reconfigure -f noninteractive tzdata && \
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata && \
     \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
-    dpkg-reconfigure --frontend=noninteractive locales && \
-    update-locale LANG=en_US.UTF-8 && \
     echo "Asia/Manila" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata && \
+    locale-gen && \
     \
     apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools \
     fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
@@ -84,6 +84,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
 #Then later update /opt/supervisord.conf last line to read -> command=/opt/noVNC/utils/launch.sh --cert /etc/pki/tls/certs/novnc.pem --ssl-only
 # Thanks to zmart/eclipse-cdt for ideas on unattended CDT install
 # software-properties-common required by Firefox
+
+ENV LANG en_US.UTF-8
 
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
