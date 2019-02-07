@@ -84,6 +84,7 @@ ENV HOME=/home/${USER_NAME}
 
 #RUN apt-get update && apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev libgtk2.0-0 \
 #    libcanberra-gtk-module g++ gdb cmake && \
+# software-properties-common required by Firefox
 RUN apt-get update && apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev \
     libcanberra-gtk-module g++ gdb cmake && \
     apt-get -y autoremove
