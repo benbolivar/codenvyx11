@@ -9,16 +9,19 @@ ENV SWT_GTK3=0
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
+#    dpkg-reconfigure --frontend=noninteractive locales && \
+#    dpkg-reconfigure -f noninteractive tzdata && \
+
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata && \
     \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
-    dpkg-reconfigure --frontend=noninteractive locales && \
+    dpkg --configure locales && \
     update-locale LANG=en_US.UTF-8 && \
     echo "Asia/Manila" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata && \
-    \
-    apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools \
+    dpkg --configure tzdata
+    
+RUN apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools \
     fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
     \
@@ -26,17 +29,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
     echo "secret\nsecret" | passwd user
 
-#    apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools \
-#    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
-#USER user
-
-#RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools fluxbox xterm xfonts-terminus
-
-#USER root
-
-#RUN apt-get install -y libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 \
-#    dbus-x11 python-numpy
-    
 USER user
 
 # download and install noVNC, Firefox, Eclipse CDT, configure Blackbox
@@ -91,8 +83,8 @@ ENV USER_NAME=user
 ENV HOME=/home/${USER_NAME}
 
 #RUN apt-get update && apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev libgtk2.0-0 \
-#    libcanberra-gtk-module g++ build-essential gdb cmake && \
-RUN apt-get update && apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev libgtk2.0-0 \
+#    libcanberra-gtk-module g++ gdb cmake && \
+RUN apt-get update && apt-get install -y libxext-dev libxrender-dev libxtst-dev libgtk2.0-0 \
     libcanberra-gtk-module g++ gdb cmake && \
     apt-get -y autoremove
 
