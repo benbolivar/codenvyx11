@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialo
     echo "Asia/Manila" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata && \
     \
-    apt-get install -y --no-install-recommends sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools && \
+    apt-get install -y --no-install-recommends sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools \
     fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1  && \
     \
