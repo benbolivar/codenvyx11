@@ -19,25 +19,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=en_US.UTF-8 && \
     echo "Asia/Manila" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
-    
-RUN apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    \
+    apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools \
     fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
     \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
-    echo "secret\nsecret" | passwd user
+    echo "secret\nsecret" | passwd user && \
+    \
+    mkdir -p /opt/noVNC/utils/websockify && \
+    wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC && \
+    wget -qO- "https://github.com/kanaka/websockify/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
+    wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" && \
+    tar xjf FirefoxSetup.tar.bz2 -C /opt/
+
+#    sudo mkdir -p /opt/noVNC/utils/websockify && \
+#    wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
+#    wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
+#    sudo wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" && \
+#    sudo tar xjf FirefoxSetup.tar.bz2 -C /opt/
 
 USER user
 
-# download and install noVNC, Firefox, Eclipse CDT, configure Blackbox
-RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
-    wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
-    wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
-    sudo wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" && \
-    sudo tar xjf FirefoxSetup.tar.bz2 -C /opt/
-    
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
 
