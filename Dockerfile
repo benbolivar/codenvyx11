@@ -27,8 +27,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     echo "Asia/Manila" > /etc/timezone && \
     locale-gen && \
     \
-    apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb subversion net-tools \
-    fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
+    apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl gnupg2 vim supervisor x11vnc xvfb \
+    subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
     \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
