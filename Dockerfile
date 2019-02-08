@@ -31,6 +31,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     echo "Asia/Manila" > /etc/timezone && \
     locale-gen && \
     \
+    mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
+    wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/ && \
+    wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | tar -zx --strip-components=1 -C /home/user/tomcat8 && \
+    rm -rf /home/user/tomcat8/webapps/* && \
+    \
     apt-get install -y --no-install-recommends dialog procps wget unzip mc curl vim supervisor x11vnc xvfb \
     subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 \
@@ -45,11 +50,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     tar xjf FirefoxSetup.tar.bz2 -C /opt/ && \
     \
     mkdir -p /home/user/KeepAlive && \
-    \
-    mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
-    wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/ && \
-    wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | tar -zx --strip-components=1 -C /home/user/tomcat8 && \
-    rm -rf /home/user/tomcat8/webapps/* && \
     \
     mkdir -p /etc/pki/tls/certs && \
     openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
