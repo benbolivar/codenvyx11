@@ -42,7 +42,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     usermod -p "*" user && \
     \
     apk add --update wget mc curl vim supervisor x11vnc xvfb \
-    fluxbox xterm xfonts-terminus dbus-x11 \
+    fluxbox xterm terminus-font dbus-x11 \
     webkit2gtk gcr && \
     \
     mkdir -p /opt/noVNC/utils/websockify && \
