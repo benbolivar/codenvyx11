@@ -17,8 +17,8 @@ USER root
 ENV USER_NAME=user
 ENV HOME=/home/${USER_NAME}
 
-#ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
-ARG ECLIPSE_MIRROR=https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R
+ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
+#ARG ECLIPSE_MIRROR=https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 && \
