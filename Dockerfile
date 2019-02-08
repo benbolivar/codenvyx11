@@ -18,12 +18,13 @@ ENV USER_NAME=user
 ENV HOME=/home/${USER_NAME}
 
 ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
-#ARG ECLIPSE_MIRROR=https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
 #RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 sudo && \
 #    apt-get install -y --no-install-recommends dialog procps wget unzip mc curl vim supervisor x11vnc xvfb \
 #    subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
+#    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
+
 RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata sudo && \
     \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
@@ -36,8 +37,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata 
     echo "secret\nsecret" | passwd user && \
     \
     apt-get install -y --no-install-recommends dialog wget mc curl vim supervisor x11vnc xvfb \
-    subversion fluxbox xterm xfonts-terminus dbus-x11 \
-    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
+    fluxbox xterm xfonts-terminus dbus-x11 \
+    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 && \
     \
     mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC && \
