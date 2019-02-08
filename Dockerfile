@@ -1,12 +1,13 @@
-FROM openjdk:8u181-jre-slim-stretch
+#FROM openjdk:8u181-jre-slim-stretch
+FROM openjdk:8u191-jdk-alpine3.8
 
 EXPOSE 8080 8000 5900 6080 32745
 
 ENV TERM xterm
 ENV DISP_SIZE 1600x900x16
-ENV DEBIAN_FRONTEND=noninteractive
+#ENV DEBIAN_FRONTEND=noninteractive
 ENV SWT_GTK3=0
-ENV LANG en_US.UTF-8
+#ENV LANG en_US.UTF-8
 ENV DISPLAY :20.0
 ENV MAVEN_VERSION=3.3.9 \
     TOMCAT_HOME=/home/user/tomcat8
@@ -20,23 +21,27 @@ ENV HOME=/home/${USER_NAME}
 ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
-#RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 sudo && \
-#    apt-get install -y --no-install-recommends dialog procps wget unzip mc curl vim supervisor x11vnc xvfb \
-#    subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
-#    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
-
-RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata sudo && \
+#RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata sudo && \
+#    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+#    echo 'LANG="en_US.UTF-8"' > /etc/default/locale && \
+#    echo "Asia/Manila" > /etc/timezone && \
+#    locale-gen && \
+#    \
+#    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+#    useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
+#    echo "secret\nsecret" | passwd user && \
+#    \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+    apk upgrade apk-tools && \
+    apk add --update ca-certificates bash openssh openssl shadow sudo \
     \
-    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    echo 'LANG="en_US.UTF-8"' > /etc/default/locale && \
-    echo "Asia/Manila" > /etc/timezone && \
-    locale-gen && \
+    echo "%root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    rm -rf /tmp/* /var/cache/apk/* && \
+    adduser -S user -h /home/user -s /bin/bash -G root -u 1000 && \
+    echo "%root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    usermod -p "*" user && \
     \
-    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
-    echo "secret\nsecret" | passwd user && \
-    \
-    apt-get install -y --no-install-recommends dialog wget mc curl vim supervisor x11vnc xvfb \
+    apk add --update wget mc curl vim supervisor x11vnc xvfb \
     fluxbox xterm xfonts-terminus dbus-x11 \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 && \
     \
@@ -58,9 +63,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata 
          -subj "/C=PH/ST=Cebu/L=Cebu/O=NA/OU=NA/CN=codenvy.io" && \
     chmod 444 /etc/pki/tls/certs/novnc.pem && \
     \
-    apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev \
+    apk add --update dbus libxext-dev libxrender-dev libxtst-dev \
     libcanberra-gtk-module g++ gdb cmake && \
-    apt-get -y autoremove && \
+    \
     wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz && \
     sed "s/@user.home\/eclipse-workspace/\/projects/g" -i /opt/eclipse/eclipse.ini && \
     \
