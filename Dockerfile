@@ -31,6 +31,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
     \
+    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
+    echo "secret\nsecret" | passwd user && \
+    \
     mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
@@ -48,10 +52,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
          -subj "/C=PH/ST=Cebu/L=Cebu/O=NA/OU=NA/CN=codenvy.io" && \
     chmod 444 /etc/pki/tls/certs/novnc.pem && \
-    \
-    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
-    echo "secret\nsecret" | passwd user && \
     \
     apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev \
     libcanberra-gtk-module g++ gdb cmake && \
