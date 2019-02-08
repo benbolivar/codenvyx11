@@ -17,31 +17,20 @@ USER root
 ENV USER_NAME=user
 ENV HOME=/home/${USER_NAME}
 
-ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
+#ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
+ARG ECLIPSE_MIRROR=https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 sudo wget && \
-    \
-    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
-    echo "secret\nsecret" | passwd user && \
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 && \
     \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    echo 'LANG="en_US.UTF-8"' > /etc/default/locale && \
+    echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
     echo "Asia/Manila" > /etc/timezone && \
     locale-gen && \
     \
-    mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
-    wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/ && \
-    wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | tar -zx --strip-components=1 -C /home/user/tomcat8 && \
-    rm -rf /home/user/tomcat8/webapps/* && \
-    \
-    apt-get install -y --no-install-recommends dialog procps unzip mc curl vim supervisor x11vnc xvfb \
+    apt-get install -y --no-install-recommends dialog sudo procps wget unzip mc curl vim supervisor x11vnc xvfb \
     subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
-    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 \
-    software-properties-common libxext-dev libxrender-dev libxtst-dev \
-    libcanberra-gtk-module g++ gdb cmake && \
-    apt-get -y autoremove && \
+    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
     \
     mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC && \
@@ -51,11 +40,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     \
     mkdir -p /home/user/KeepAlive && \
     \
+    mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VERSION && \
+    wget -qO- "http://apache.ip-connect.vn.ua/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | tar -zx --strip-components=1 -C /home/user/apache-maven-$MAVEN_VERSION/ && \
+    wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | tar -zx --strip-components=1 -C /home/user/tomcat8 && \
+    rm -rf /home/user/tomcat8/webapps/* && \
+    \
     mkdir -p /etc/pki/tls/certs && \
     openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
          -subj "/C=PH/ST=Cebu/L=Cebu/O=NA/OU=NA/CN=codenvy.io" && \
     chmod 444 /etc/pki/tls/certs/novnc.pem && \
     \
+    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
+    echo "secret\nsecret" | passwd user && \
+    \
+    apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev \
+    libcanberra-gtk-module g++ gdb cmake && \
+    apt-get -y autoremove && \
     wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz && \
     sed "s/@user.home\/eclipse-workspace/\/projects/g" -i /opt/eclipse/eclipse.ini && \
     \
@@ -65,10 +66,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
         \nif [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\
         \nsleep 5\ncp -rf /home/user/KeepAlive /projects\
         \nfi" | sudo tee -a /home/user/.bashrc
-
-#    apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev \
-#    libcanberra-gtk-module g++ gdb cmake && \
-#    apt-get -y autoremove && \
 
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
