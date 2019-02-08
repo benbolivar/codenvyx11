@@ -20,7 +20,7 @@ ENV HOME=/home/${USER_NAME}
 ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 sudo && \
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 sudo wget && \
     \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | tar -zx --strip-components=1 -C /home/user/tomcat8 && \
     rm -rf /home/user/tomcat8/webapps/* && \
     \
-    apt-get install -y --no-install-recommends dialog procps wget unzip mc curl vim supervisor x11vnc xvfb \
+    apt-get install -y --no-install-recommends dialog procps unzip mc curl vim supervisor x11vnc xvfb \
     subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 \
     software-properties-common libxext-dev libxrender-dev libxtst-dev \
