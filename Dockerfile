@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     chmod 444 /etc/pki/tls/certs/novnc.pem && \
     \
     wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz && \
-    sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini && \
+    sed "s/@user.home\/eclipse-workspace/\/projects/g" -i /opt/eclipse/eclipse.ini && \
     \
     printf "\nexport M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\
         \nexport TOMCAT_HOME=/home/user/tomcat8\
