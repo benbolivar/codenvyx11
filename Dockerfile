@@ -31,7 +31,7 @@ ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 #    useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
 #    echo "secret\nsecret" | passwd user && \
 #    \
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
     apk upgrade apk-tools && \
     apk add --update ca-certificates bash openssh openssl shadow sudo \
     \
@@ -43,7 +43,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
     \
     apk add --update wget mc curl vim supervisor x11vnc xvfb \
     fluxbox xterm xfonts-terminus dbus-x11 \
-    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 && \
+    webkit2gtk gcr && \
     \
     mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC && \
@@ -64,7 +64,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
     chmod 444 /etc/pki/tls/certs/novnc.pem && \
     \
     apk add --update dbus libxext-dev libxrender-dev libxtst-dev \
-    libcanberra-gtk-module g++ gdb cmake && \
+    gtk+3.0 libcanberra-gtk3 g++ gdb cmake && \
     \
     wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz && \
     sed "s/@user.home\/eclipse-workspace/\/projects/g" -i /opt/eclipse/eclipse.ini && \
