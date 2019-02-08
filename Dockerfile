@@ -21,10 +21,13 @@ ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/ph
 #ARG ECLIPSE_MIRROR=https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 sudo && \
+#RUN apt-get update && apt-get install -y --no-install-recommends apt-utils locales tzdata gnupg2 sudo && \
+#    apt-get install -y --no-install-recommends dialog procps wget unzip mc curl vim supervisor x11vnc xvfb \
+#    subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
+RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata sudo && \
     \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
+    echo 'LANG="en_US.UTF-8"' > /etc/default/locale && \
     echo "Asia/Manila" > /etc/timezone && \
     locale-gen && \
     \
@@ -32,9 +35,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils local
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
     echo "secret\nsecret" | passwd user && \
     \
-
-    apt-get install -y --no-install-recommends dialog procps wget unzip mc curl vim supervisor x11vnc xvfb \
-    subversion net-tools fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
+    apt-get install -y --no-install-recommends dialog wget mc curl vim supervisor x11vnc xvfb \
+    subversion fluxbox xterm xfonts-terminus dbus-x11 \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 && \
     \
     mkdir -p /opt/noVNC/utils/websockify && \
