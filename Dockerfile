@@ -1,5 +1,7 @@
 #FROM openjdk:8u181-jre-slim-stretch
-FROM openjdk:8u191-jdk-alpine3.8
+#FROM openjdk:8u191-jdk-alpine3.8
+FROM eclipse/alpine_jdk8
+
 
 EXPOSE 8080 8000 5900 6080 32745
 
