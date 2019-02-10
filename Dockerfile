@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata 
     echo "secret\nsecret" | passwd user && \
     \
     apt-get install -y --no-install-recommends dialog wget mc curl vim supervisor x11vnc xvfb \
-    fluxbox xterm xfonts-terminus dbus-x11 numpy \
+    fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
     libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 && \
     \
     mkdir -p /opt/noVNC/utils/websockify && \
