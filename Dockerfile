@@ -106,13 +106,13 @@ ARG ECLIPSE_MIRROR=http://ftp.fau.de/eclipse/technology/epp/downloads/release/ph
 ARG ECLIPSE_TAR=eclipse-cpp-photon-R-linux-gtk-x86_64.tar.gz
 
 RUN wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz
-RUN sudo sed "s/@user.home/\/projects/g" -i /opt/eclipse/eclipse.ini
+RUN sudo sed "s/@user.home\/eclipse-workspace/\/projects/g" -i /opt/eclipse/eclipse.ini
 
 USER user
 
 WORKDIR /projects
 
-ENV ECLIPSE_WORKSPACE=/projects/eclipse-workspace
+ENV ECLIPSE_WORKSPACE=/projects
 ENV ECLIPSE_DOT=/projects/.eclipse
 ENV DELAY=50
 
