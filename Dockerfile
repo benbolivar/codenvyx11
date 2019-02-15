@@ -5,8 +5,7 @@ EXPOSE 8080 8000 5900 6080 32745
 
 ENV TERM=xterm \
     DISP_SIZE=1600x900x16 \
-    DEBIAN_FRONTEND=noninteractive \
-    LANG=en_US.UTF-8
+    DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales && \
     \
@@ -29,7 +28,7 @@ USER user
 RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | sudo tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
-    sudo apt-get install -y firefox && \
+    sudo apt-get update && sudo apt-get install -y firefox && \
     sudo mkdir -p /etc/X11/blackbox && \
     echo "[begin] (Blackbox) \n \
     [exec] (Terminal)    {urxvt -fn "xft:Terminus:size=14"} \n \
@@ -45,7 +44,8 @@ ADD keepalive.html /home/user/KeepAlive
 
 ENV DISPLAY :20.0
 ENV MAVEN_VERSION=3.3.9 \
-    TOMCAT_HOME=/home/user/tomcat8
+    TOMCAT_HOME=/home/user/tomcat8 \
+    LANG=en_US.UTF-8
 
 ENV M2_HOME=/home/user/apache-maven-$MAVEN_VERSION
 ENV PATH=$M2_HOME/bin:$PATH
