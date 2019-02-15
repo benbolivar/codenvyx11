@@ -4,9 +4,10 @@ EXPOSE 8080 8000 5900
 
 ENV TERM xterm
 ENV DISP_SIZE 1600x900x16
+ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata locales && \
+RUN apt-get install -y tzdata locales && \
     cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 
 RUN apt-get update && \
@@ -32,9 +33,8 @@ RUN sudo apt-get update -qqy && \
 
 USER root
 
-RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy && \
-    wget http://archive.ubuntu.com/ubuntu/pool/universe/m/midori/midori_0.5.11-ds1-2_amd64.deb && \
-    dpkg -i midori_0.5.11-ds1-2_amd64.deb
+RUN apt-get install -y libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 \
+    dbus-x11 python-numpy
 
 USER user
 
@@ -46,7 +46,6 @@ RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     sudo mkdir -p /etc/X11/blackbox && \
     echo "[begin] (Blackbox) \n \
     [exec] (Terminal)    {urxvt -fn "xft:Terminus:size=14"} \n \
-    [exec] (Browser)     {midori} \n \
     [exec] (Firefox)     {firefox} \n \
     [exec] (Eclipse CDT) {/opt/eclipse/eclipse} \n \
     [end]" | sudo tee -a /etc/X11/blackbox/blackbox-menu
@@ -73,16 +72,16 @@ RUN mkdir /home/user/cbuild /home/user/tomcat8 /home/user/apache-maven-$MAVEN_VE
 RUN sudo wget -qO- "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz" | sudo tar -zx --strip-components=1 -C /home/user/tomcat8 && \
     sudo rm -rf /home/user/tomcat8/webapps/*
 
-ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
 
 # Add run commands in /home/user/.bashrc
-RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\n\
-export M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\n\
-export TOMCAT_HOME=/home/user/tomcat8\n\
-export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\n\
-if [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\nsleep 5\ncp -rf /home/user/KeepAlive /projects\nfi\n\
-sudo date >> /home/user/date.log" | sudo tee -a /home/user/.bashrc
+RUN echo "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\
+        \nexport M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\
+        \nexport TOMCAT_HOME=/home/user/tomcat8\
+        \nexport PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\
+        \nif [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\
+        \n  sleep 5\ncp -rf /home/user/KeepAlive /projects\
+        \nfi" | sudo tee -a /home/user/.bashrc
 
 RUN sudo locale-gen en_US.UTF-8
 
