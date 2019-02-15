@@ -1,7 +1,7 @@
 #FROM ubuntu
 FROM openjdk:8u181-jre-slim-stretch
 
-EXPOSE 8080 8000 5900
+EXPOSE 8080 8000 5900 6080 32745
 
 ENV TERM=xterm \
     DISP_SIZE=1600x900x16 \
@@ -9,20 +9,19 @@ ENV TERM=xterm \
     LANG=en_US.UTF-8
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils dialog tzdata locales && \
-    cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
-
-RUN apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
+    \
+    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    echo 'LANG="en_US.UTF-8"' > /etc/default/locale && \
+    echo "Asia/Manila" > /etc/timezone && \
+    locale-gen && \
+    \
+    apt-get -y install sudo procps wget unzip mc curl gnupg2 vim && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
-    echo "secret\nsecret" | passwd user
-
-USER user
-
-RUN sudo apt-get -qqy install supervisor x11vnc xvfb subversion net-tools blackbox rxvt-unicode xfonts-terminus
-
-USER root
-
-RUN libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy
+    echo "secret\nsecret" | passwd user && \
+    \
+    apt-get -qqy install supervisor x11vnc xvfb subversion net-tools blackbox rxvt-unicode xfonts-terminus \
+    libjavascriptcoregtk-1.0-0 libwebkitgtk-1.0-0 libgck-1-0 libgcr-base-3-1 libsoup-gnome2.4-1 libzeitgeist-2.0-0 dbus-x11 python-numpy
 
 USER user
 
@@ -43,8 +42,6 @@ ADD supervisord.conf /opt/
 
 RUN sudo mkdir -p /home/user/KeepAlive
 ADD keepalive.html /home/user/KeepAlive
-
-EXPOSE 6080 32745
 
 ENV DISPLAY :20.0
 ENV MAVEN_VERSION=3.3.9 \
@@ -68,8 +65,8 @@ RUN echo "export M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\
         \n  sleep 5\ncp -rf /home/user/KeepAlive /projects\
         \nfi" | sudo tee -a /home/user/.bashrc
 
-RUN sudo locale-gen en_US.UTF-8 && \
-    sudo mkdir -p /etc/pki/tls/certs && \
+#RUN sudo locale-gen en_US.UTF-8 && \
+RUN sudo mkdir -p /etc/pki/tls/certs && \
     sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/pki/tls/certs/novnc.pem -out /etc/pki/tls/certs/novnc.pem -days 3650 \
          -subj "/C=PH/ST=Cebu/L=Cebu/O=NA/OU=NA/CN=codenvy.io" && \
     sudo chmod 444 /etc/pki/tls/certs/novnc.pem
