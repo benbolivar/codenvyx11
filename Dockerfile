@@ -36,11 +36,13 @@ RUN sudo mkdir -p /opt/noVNC/utils/websockify && \
     [exec] (Eclipse CDT) {/opt/eclipse/eclipse} \n \
     [end]" | sudo tee -a /etc/X11/blackbox/blackbox-menu
 
+RUN sudo mkdir -p /home/user/KeepAlive
+
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
-
-RUN sudo mkdir -p /home/user/KeepAlive
 ADD keepalive.html /home/user/KeepAlive
+ADD --chown=user:user menu /home/user/.menu
+ADD --chown=user:user init /home/user/.init
 
 ENV DISPLAY :20.0
 ENV MAVEN_VERSION=3.3.9 \
