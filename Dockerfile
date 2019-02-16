@@ -1,5 +1,6 @@
 #FROM ubuntu
-FROM openjdk:8u181-jre-slim-stretch
+#FROM openjdk:8u181-jre-slim-stretch
+FROM openjdk:8u181-jdk-stretch
 
 EXPOSE 8080 8000 5900 6080 32745
 
