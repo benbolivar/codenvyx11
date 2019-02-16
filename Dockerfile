@@ -1,5 +1,6 @@
 #FROM openjdk:8u181-jre-slim-stretch
-FROM openjdk:8u181-jdk-stretch
+#FROM openjdk:8u181-jdk-stretch
+FROM ubuntu
 
 EXPOSE 8080 8000 5900 6080 32745
 
@@ -34,7 +35,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata 
     \
     apt-get install -y --no-install-recommends dialog wget mc curl vim supervisor x11vnc xvfb \
     fluxbox xterm xfonts-terminus dbus-x11 python-numpy \
-    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1 && \
+    libjavascriptcoregtk-3.0-0 libwebkitgtk-3.0-0 libgck-1-0 libgcr-base-3-1  openjdk-8-jre && \
     \
     mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC && \
