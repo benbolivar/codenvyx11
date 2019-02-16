@@ -61,12 +61,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata 
     wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz && \
     sed "s/@user.home\/eclipse-workspace/\/projects/g" -i /opt/eclipse/eclipse.ini && \
     \
-    printf "\nexport M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\
-        \nexport TOMCAT_HOME=/home/user/tomcat8\
-        \nexport PATH=$M2_HOME/bin:$PATH\
-        \nif [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\
-        \nsleep 5\ncp -rf /home/user/KeepAlive /projects\
-        \nfi" | sudo tee -a /home/user/.bashrc
+    printf "export JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX\
+            \nexport M2_HOME=/home/user/apache-maven-$MAVEN_VERSION\
+            \nexport TOMCAT_HOME=/home/user/tomcat8\
+            \nexport PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH\
+            \nif [ ! -f /projects/KeepAlive/keepalive.html ]\nthen\
+            \nsleep 5\ncp -rf /home/user/KeepAlive /projects\
+            \nfi" | sudo tee -a /home/user/.bashrc
 
 ADD index.html  /opt/noVNC/
 ADD supervisord.conf /opt/
