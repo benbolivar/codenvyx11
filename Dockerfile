@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata 
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
     wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" && \
-    tar xjf FirefoxSetup.tar.bz2 -C /opt/ && \
+    tar xjf FirefoxSetup.tar.bz2 -C /opt/ && rm -rf FirefoxSetup.tar.bz2 && \
     \
     mkdir -p /home/user/KeepAlive && \
     \
@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata 
     \
     apt-get install -y software-properties-common libxext-dev libxrender-dev libxtst-dev \
     libcanberra-gtk-module g++ gdb cmake && \
-    apt-get -y autoremove && \
+    apt-get -y autoremove && apt-get clean && \
     wget ${ECLIPSE_MIRROR}/${ECLIPSE_TAR} -O /tmp/eclipse.tar.gz -q && tar -xf /tmp/eclipse.tar.gz -C /opt && rm /tmp/eclipse.tar.gz && \
     sed "s/@user.home\/eclipse-workspace/\/projects/g" -i /opt/eclipse/eclipse.ini && \
     \
