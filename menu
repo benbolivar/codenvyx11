@@ -16,7 +16,7 @@
 #     session.menuFile: ~/.fluxbox/my-menu
 [begin] (Fluxbox-1.3.7)
 [encoding] {UTF-8}
-      [exec] (Firefox) {/opt/firefox/firefox}
+      [exec] (Firefox) {/usr/bin/firefox}
       [exec] (Terminal) {xterm -fa "xft:Terminus:size=14"}
       [exec] (File Manager) {xterm -fa "xft:Terminus:size=14" -e mc}
       [exec] (Eclipse CDT) {/opt/eclipse/eclipse}
