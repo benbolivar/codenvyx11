@@ -40,8 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales tzdata 
     mkdir -p /opt/noVNC/utils/websockify && \
     wget -qO- "http://github.com/kanaka/noVNC/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC && \
     wget -qO- "https://github.com/kanaka/websockify/tarball/master" | tar -zx --strip-components=1 -C /opt/noVNC/utils/websockify && \
-    wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" && \
-    tar xjf FirefoxSetup.tar.bz2 -C /opt/ && rm -rf FirefoxSetup.tar.bz2 && \
+    apt-get install firefox && \
     \
     mkdir -p /home/user/KeepAlive && \
     \
